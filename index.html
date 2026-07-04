@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الذكاء الاصطناعي خطوة خطوة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Fira+Code:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --success-color: #2ea44f;
+            --danger-color: #f85149;
+            --warning-color: #f0883e;
+            --border-color: #30363d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 120px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin: 10px 0 5px 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.3s, opacity 0.3s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            background-color: #21262d;
+            color: #8b949e;
+            cursor: not-allowed;
+        }
+
+        .btn-youtube {
+            background-color: #ff0000;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+        }
+
+        .btn-check {
+            background-color: #8957e5;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .timer-box {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--warning-color);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-family: 'Fira Code', monospace;
+            z-index: 1000;
+        }
+
+        pre,
+        .code-editor {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 6px;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Fira Code', monospace;
+            overflow-x: auto;
+            color: #ff7b72;
+        }
+
+        .editor-container {
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #0d1117;
+        }
+
+        /* --- تصميم تبويبات اللغات الجديدة --- */
+        .code-tabs {
+            display: flex;
+            background-color: #161b22;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #8b949e;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-top: 3px solid transparent;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background-color: #21262d;
+            color: #c9d1d9;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-color);
+            background-color: #0d1117;
+            border-top-color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .editor-header {
+            background-color: #1f242c;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .code-editor {
+            width: 100%;
+            height: 180px;
+            background-color: transparent;
+            color: #79c0ff;
+            border: none;
+            resize: vertical;
+            box-sizing: border-box;
+            font-size: 1rem;
+            line-height: 1.5;
+            padding: 15px;
+        }
+
+        .code-editor:focus {
+            outline: none;
+        }
+
+        .console-output {
+            background-color: #05070a;
+            border-top: 1px solid var(--border-color);
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            direction: ltr;
+            text-align: left;
+            min-height: 60px;
+            color: #58a6ff;
+            white-space: pre-wrap;
+        }
+
+        .console-title {
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-bottom: 5px;
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .badge {
+            background-color: #21262d;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .info-block {
+            margin: 15px 0;
+            padding: 10px 15px;
+            border-left: 4px solid var(--accent-color);
+            background-color: rgba(88, 166, 255, 0.1);
+            border-radius: 0 6px 6px 0;
+        }
+
+        .info-block.mistake {
+            border-left-color: var(--danger-color);
+            background-color: rgba(248, 81, 73, 0.1);
+        }
+
+        .info-block.challenge {
+            border-left-color: var(--warning-color);
+            background-color: rgba(240, 136, 62, 0.1);
+        }
+
+        .breakdown-list {
+            padding-right: 20px;
+            margin: 10px 0;
+        }
+
+        .breakdown-list li {
+            margin-bottom: 5px;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .option-item {
+            margin-bottom: 12px;
+            background-color: var(--bg-color);
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .option-item:hover {
+            background-color: #1f242c;
+        }
+
+        .option-item input {
+            margin-left: 12px;
+            cursor: pointer;
+        }
+
+        .option-item.correct {
+            background-color: rgba(46, 164, 79, 0.15) !important;
+            border-color: var(--success-color) !important;
+        }
+
+        .option-item.wrong {
+            background-color: rgba(248, 81, 73, 0.15) !important;
+            border-color: var(--danger-color) !important;
+        }
+
+        .feedback-msg {
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .certificate-box {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 8px double var(--accent-color);
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .certificate-box h2 {
+            color: #ffd700;
+            font-size: 2.2rem;
+            margin-top: 0;
+        }
+
+        .certificate-box .student-name {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        #quiz-container,
+        #result-container {
+            display: none;
+        }
+
+        .interactive-tab {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .interactive-tab-header {
+            background-color: #1f242c;
+            padding: 12px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .interactive-tab-header:hover {
+            background-color: #282e38;
+        }
+
+        .interactive-tab-content {
+            padding: 15px;
+            background-color: var(--bg-color);
+            display: none;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .interactive-tab.active .interactive-tab-content {
+            display: block;
+        }
+
+        .interactive-tab-header::after {
+            content: '📂';
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .interactive-tab.active .interactive-tab-header::after {
+            content: '📂';
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="timer-box" id="timer-box" style="display: none;">الوقت المتبقي: <span id="timer-display">60:00</span>
+    </div>
+
+    <header>
+        <img src="https://i.postimg.cc/H8J4gQj6/image.png" alt="لوجو أكاديمية مستر روبوت" class="logo">
+        <h1>أكاديمية مستر روبوت</h1>
+        <p>مهندس / أندرو مجدي</p>
+        <a href="https://youtube.com/@mrrobotacademy?si=OnsqGekQOfPy-_QL" target="_blank" class="btn btn-youtube">قناة
+            اليوتيوب الرسمية</a>
+        <button type="button" id="language-toggle-btn" class="btn" onclick="toggleLanguage()">English</button>
+    </header>
+
+    <div class="container">
+
+        <section class="card" id="lessons-section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>📚 محاضرة الذكاء الاصطناعي خطوة خطوة</h2>
+                <span class="badge" id="lesson-progress">الدرس 1 من 40</span>
+            </div>
+
+            <div id="lesson-content-area"></div>
+
+            <div class="nav-controls">
+                <button class="btn" id="prev-lesson-btn" onclick="navigateLesson(-1)">⬅ الدرس السابق</button>
+                <button class="btn" id="next-lesson-btn" onclick="navigateLesson(1)">الدرس التالي ➡</button>
+            </div>
+        </section>
+
+        <section id="quiz-setup" class="card">
+            <h2>📝 اختبار الذكاء الاصطناعي خطوة خطوة (50 سؤال)</h2>
+            <p>يرجى إدخال اسمك ثلاثي.</p>
+            <div class="input-group">
+                <label for="student-name-input">اسم الطالب / الطالبة:</label>
+                <input type="text" id="student-name-input" placeholder="اكتب اسمك الثلاثي هنا...">
+            </div>
+            <button class="btn" style="width: 100%; margin: 10px 0;" onclick="startQuiz()">ابدأ الاختبار التفاعلي الآن
+                🚀</button>
+        </section>
+
+        <section id="quiz-container" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 id="question-title">السؤال الحالي:</h2>
+                <span class="badge" id="quiz-progress">السؤال 1 من 50</span>
+            </div>
+
+            <div id="dynamic-quiz-area"></div>
+
+            <div id="feedback-area"></div>
+
+            <div class="nav-controls">
+                <button class="btn" id="prev-quiz-btn" onclick="navigateQuiz(-1)">السابق</button>
+                <button class="btn btn-check" id="check-ans-btn" onclick="checkCurrentAnswer()">التحقق من الإجابة
+                    🔍</button>
+                <button class="btn" id="next-quiz-btn" onclick="navigateQuiz(1)">التالي</button>
+            </div>
+
+            <button type="button" class="btn"
+                style="background-color: var(--success-color); width: 100%; margin-top: 25px;"
+                onclick="submitQuiz()">تأكيد إنهاء الاختبار بالكامل وإرسال الإجابات ✔</button>
+        </section>
+
+        <section id="result-container" class="card">
+            <h2>🎉 نتيجة الاختبار النهائية</h2>
+            <p id="score-summary"></p>
+
+            <div class="certificate-box" id="certificate">
+                <h2>تقرير الأكاديمية الرسمي</h2>
+                <p>تقرير شامل بأن الطالب/الطالبة:</p>
+                <div class="student-name" id="cert-name">طالب أكاديمية مستر روبوت</div>
+                <p>قد أتم الواجبات والاختبار لـ <b>الذكاء الاصطناعي خطوة خطوة بالعربي والإنجليزي</b></p>
+                <p id="cert-score">بدرجة: 100%</p>
+                <div style="margin-top: 30px; font-size: 0.9rem; color: #8892b0;">تم الاعتماد ومراجعة الأداء برمجياً
+                    بنجاح 🤖</div>
+            </div>
+
+            <div style="text-align: center; margin-top: 25px;">
+                <button class="btn btn-whatsapp" onclick="shareToWhatsApp()">إرسال التقرير على الواتساب 📱</button>
+                <button class="btn" style="background-color: #6e7681;" onclick="location.reload()">إعادة الاختبار
+                    والدروس 🔄</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- أولاً: مصفوفة شرح الذكاء الاصطناعي خطوة خطوة (40 نقطة) ---
+        const lessonsData = [
+          {
+                    "title": "1. إحنا بنكتب القاعدة بنفسنا",
+                    "level": "Beginner",
+                    "code": "# Example 1: we write the rule ourselves\ndef predict_score(hours):\n    return hours * 10 + 20\n\nprint(\"If a student studies 5 hours:\", predict_score(5))\nprint(\"If a student studies 8 hours:\", predict_score(8))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "لو غيرت 10 إلى 12 في المعادلة، التوقعات هتزيد. هذا يوضح أن القاعدة هنا مكتوبة بيدنا."
+          },
+          {
+                    "title": "2. السؤال المهم: إزاي عرفنا المعادلة؟",
+                    "level": "Beginner",
+                    "code": "# Example 1: we write the rule ourselves\ndef predict_score(hours):\n    return hours * 10 + 20\n\nprint(\"If a student studies 5 hours:\", predict_score(5))\nprint(\"If a student studies 8 hours:\", predict_score(8))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "جرّب تغيير +20 إلى +10 ولاحظ أن نقطة البداية اتغيرت، ثم اسأل: هل الرقم جاء من إحساس أم من بيانات؟"
+          },
+          {
+                    "title": "3. ما معنى Data؟",
+                    "level": "Beginner",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر الدرجة الأخيرة من 70 إلى 75 وشغّل في Colab. النموذج سيتعلم علاقة مختلفة قليلًا."
+          },
+          {
+                    "title": "4. ما معنى Model؟",
+                    "level": "Beginner",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر predict من 6 إلى 7. ستلاحظ أن نفس النموذج يستخدم ما تعلمه ليعطي توقعًا جديدًا."
+          },
+          {
+                    "title": "5. ما معنى Training؟",
+                    "level": "Beginner",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "علّق سطر model.fit وشاهد أن النموذج لا يستطيع التوقع قبل التعلم."
+          },
+          {
+                    "title": "6. الكمبيوتر يستنتج العلاقة",
+                    "level": "Beginner",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر X بإضافة [[6]] و y بإضافة 80، ثم توقّع 7 ساعات."
+          },
+          {
+                    "title": "7. الفرق بين البرمجة العادية وتعلم الآلة",
+                    "level": "Beginner",
+                    "code": "# Example 1: we write the rule ourselves\ndef predict_score(hours):\n    return hours * 10 + 20\n\nprint(\"If a student studies 5 hours:\", predict_score(5))\nprint(\"If a student studies 8 hours:\", predict_score(8))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "في الكود الأول أنت كتبت المعادلة. في كود LinearRegression الكمبيوتر يحاول اكتشافها من الأمثلة."
+          },
+          {
+                    "title": "8. Input و Output",
+                    "level": "Beginner",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "X هي المدخلات و y هي المخرجات. غيّر قيمة واحدة في y لتفهم أن المخرجات هي الإجابة التي يتعلم منها النموذج."
+          },
+          {
+                    "title": "9. Feature يعني صفة",
+                    "level": "Beginner",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "في مثال البيت الصفة هي المساحة. جرّب توقع مساحة 160 بدل 180."
+          },
+          {
+                    "title": "10. Label يعني الإجابة الصحيحة",
+                    "level": "Beginner",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "السعر هو الإجابة التي نعلم بها النموذج. غيّر سعر 200 متر من 1000 إلى 1100 ولاحظ التأثير."
+          },
+          {
+                    "title": "11. مثال أسعار البيوت",
+                    "level": "Beginner",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر المساحة المطلوبة من 180 إلى 90 وشاهد كيف يختلف السعر المتوقع."
+          },
+          {
+                    "title": "12. استخدام pandas في تجهيز البيانات",
+                    "level": "Beginner",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "اطبع data قبل التدريب حتى يرى الطلاب الجدول الذي يتعلم منه النموذج."
+          },
+          {
+                    "title": "13. اختيار X من الجدول",
+                    "level": "Intermediate",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر X إلى data[[\"area\"]] كما هو، واشرح أن الأقواس المزدوجة تبقيه جدولًا مناسبًا للتدريب."
+          },
+          {
+                    "title": "14. اختيار y من الجدول",
+                    "level": "Intermediate",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "اطبع y وحدها ليرى الطلاب قائمة الأسعار التي تمثل الإجابة الصحيحة."
+          },
+          {
+                    "title": "15. fit هي لحظة التعلم",
+                    "level": "Intermediate",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "انقل predict قبل fit في Colab لترى لماذا يجب التدريب أولًا."
+          },
+          {
+                    "title": "16. predict هي لحظة السؤال",
+                    "level": "Intermediate",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر 180 إلى 220 واسأل الطلاب: هل هذا توقع أم رقم محفوظ؟"
+          },
+          {
+                    "title": "17. Regression يعني توقع رقم",
+                    "level": "Intermediate",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "السعر رقم، والدرجة رقم. لذلك هذا النوع اسمه Regression."
+          },
+          {
+                    "title": "18. تصنيف الطالب: ينجح أو يرسب",
+                    "level": "Intermediate",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر student إلى [[9, 7]] ثم إلى [[3, 5]] وشاهد اختلاف النتيجة."
+          },
+          {
+                    "title": "19. Classification يعني اختيار فئة",
+                    "level": "Intermediate",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "الناتج هنا 0 أو 1 وليس سعرًا أو درجة. هذا اسمه تصنيف."
+          },
+          {
+                    "title": "20. Decision Tree فكرة بسيطة",
+                    "level": "Intermediate",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "الشجرة تتعلم قرارات من الأمثلة: ساعات قليلة غالبًا رسوب، ساعات أكثر غالبًا نجاح."
+          },
+          {
+                    "title": "21. أهمية ساعات النوم",
+                    "level": "Intermediate",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر ساعات النوم في student من 6 إلى 8 واسأل هل النوم وحده يكفي؟"
+          },
+          {
+                    "title": "22. أهمية بيانات التدريب",
+                    "level": "Intermediate",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "أضف مثالًا جديدًا [6, 8] نتيجته 1 ولاحظ أن قرار النموذج قد يتغير."
+          },
+          {
+                    "title": "23. قبل التدريب الكمبيوتر لا يعرف",
+                    "level": "Intermediate",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "قبل fit النموذج مثل طفل لم ير أمثلة. التدريب هو عرض الأمثلة عليه."
+          },
+          {
+                    "title": "24. أثناء التدريب نقارن التوقع بالحقيقة",
+                    "level": "Intermediate",
+                    "code": "# A tiny training idea without complicated math\nweight = 1\n\nexamples = [\n    [2, 40],\n    [3, 50],\n    [4, 60]\n]\n\nfor hours, real_score in examples:\n    prediction = hours * weight + 20\n    error = real_score - prediction\n    weight = weight + error * 0.01\n    print(\"hours:\", hours, \"prediction:\", prediction, \"new weight:\", round(weight, 2))\n\nprint(\"Final weight:\", round(weight, 2))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر weight الابتدائي من 1 إلى 5 ولاحظ كيف يحاول الكود تعديله."
+          },
+          {
+                    "title": "25. ما معنى Weights؟",
+                    "level": "Intermediate",
+                    "code": "# A tiny training idea without complicated math\nweight = 1\n\nexamples = [\n    [2, 40],\n    [3, 50],\n    [4, 60]\n]\n\nfor hours, real_score in examples:\n    prediction = hours * weight + 20\n    error = real_score - prediction\n    weight = weight + error * 0.01\n    print(\"hours:\", hours, \"prediction:\", prediction, \"new weight:\", round(weight, 2))\n\nprint(\"Final weight:\", round(weight, 2))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "الوزن رقم داخلي يغيره الكمبيوتر أثناء التعلم حتى يقل الخطأ."
+          },
+          {
+                    "title": "26. تشبيه المفاتيح الصغيرة",
+                    "level": "Intermediate",
+                    "code": "# A tiny training idea without complicated math\nweight = 1\n\nexamples = [\n    [2, 40],\n    [3, 50],\n    [4, 60]\n]\n\nfor hours, real_score in examples:\n    prediction = hours * weight + 20\n    error = real_score - prediction\n    weight = weight + error * 0.01\n    print(\"hours:\", hours, \"prediction:\", prediction, \"new weight:\", round(weight, 2))\n\nprint(\"Final weight:\", round(weight, 2))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "تخيل weight مفتاح صغير. كل خطأ يجعل الكمبيوتر يحركه قليلًا."
+          },
+          {
+                    "title": "27. الخطأ Error",
+                    "level": "Intermediate",
+                    "code": "# A tiny training idea without complicated math\nweight = 1\n\nexamples = [\n    [2, 40],\n    [3, 50],\n    [4, 60]\n]\n\nfor hours, real_score in examples:\n    prediction = hours * weight + 20\n    error = real_score - prediction\n    weight = weight + error * 0.01\n    print(\"hours:\", hours, \"prediction:\", prediction, \"new weight:\", round(weight, 2))\n\nprint(\"Final weight:\", round(weight, 2))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "اطبع error فقط في كل دورة واسأل: هل الخطأ موجب أم سالب؟"
+          },
+          {
+                    "title": "28. تكرار التدريب",
+                    "level": "Intermediate",
+                    "code": "# A tiny training idea without complicated math\nweight = 1\n\nexamples = [\n    [2, 40],\n    [3, 50],\n    [4, 60]\n]\n\nfor hours, real_score in examples:\n    prediction = hours * weight + 20\n    error = real_score - prediction\n    weight = weight + error * 0.01\n    print(\"hours:\", hours, \"prediction:\", prediction, \"new weight:\", round(weight, 2))\n\nprint(\"Final weight:\", round(weight, 2))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "كرر قائمة examples مرتين داخل الكود لترى أن التدريب المتكرر يغير الوزن أكثر."
+          },
+          {
+                    "title": "29. بعد التدريب: هل حفظ الصور؟",
+                    "level": "Practice",
+                    "code": "# A tiny training idea without complicated math\nweight = 1\n\nexamples = [\n    [2, 40],\n    [3, 50],\n    [4, 60]\n]\n\nfor hours, real_score in examples:\n    prediction = hours * weight + 20\n    error = real_score - prediction\n    weight = weight + error * 0.01\n    print(\"hours:\", hours, \"prediction:\", prediction, \"new weight:\", round(weight, 2))\n\nprint(\"Final weight:\", round(weight, 2))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "الفكرة: النموذج لا يحفظ كل مثال، بل يتعلم نمطًا عامًا من الأمثلة."
+          },
+          {
+                    "title": "30. الصفات المشتركة",
+                    "level": "Practice",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "في الصور قد يتعلم شكل الأذن أو الوجه. في مثال الطالب يتعلم ساعات المذاكرة والنوم."
+          },
+          {
+                    "title": "31. لماذا نحتاج أمثلة كثيرة؟",
+                    "level": "Practice",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "أضف أمثلة أكثر للنجاح والرسوب. كلما زادت الأمثلة صار القرار أكثر وضوحًا."
+          },
+          {
+                    "title": "32. مشكلة المثال الواحد",
+                    "level": "Practice",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "احذف أغلب البيانات واترك مثالين فقط. اسأل الطلاب: هل هذا كافٍ لفهم العالم كله؟"
+          },
+          {
+                    "title": "33. Teachable Machine",
+                    "level": "Practice",
+                    "code": "# Example 1: we write the rule ourselves\ndef predict_score(hours):\n    return hours * 10 + 20\n\nprint(\"If a student studies 5 hours:\", predict_score(5))\nprint(\"If a student studies 8 hours:\", predict_score(8))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "افتح الموقع https://teachablemachine.withgoogle.com/train ودرّب نموذج صور بسيط. الهدف هنا فهم التدريب بصريًا بدون رياضيات."
+          },
+          {
+                    "title": "34. خطوات تدريب الصور",
+                    "level": "Practice",
+                    "code": "# Example 1: we write the rule ourselves\ndef predict_score(hours):\n    return hours * 10 + 20\n\nprint(\"If a student studies 5 hours:\", predict_score(5))\nprint(\"If a student studies 8 hours:\", predict_score(8))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "Class 1 للقطط وClass 2 للكلاب، ثم اجمع صورًا كثيرة ومتنوعة."
+          },
+          {
+                    "title": "35. اختبار النموذج بعد التدريب",
+                    "level": "Practice",
+                    "code": "# Example 1: we write the rule ourselves\ndef predict_score(hours):\n    return hours * 10 + 20\n\nprint(\"If a student studies 5 hours:\", predict_score(5))\nprint(\"If a student studies 8 hours:\", predict_score(8))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "بعد التدريب جرّب صورة جديدة لم تكن ضمن التدريب واسأل: هل النموذج عمّم أم حفظ؟"
+          },
+          {
+                    "title": "36. Data هي الصور أو الجداول",
+                    "level": "Practice",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "في البيوت البيانات جدول، وفي Teachable Machine البيانات صور."
+          },
+          {
+                    "title": "37. Training هو التعلم من الأمثلة",
+                    "level": "Practice",
+                    "code": "from sklearn.linear_model import LinearRegression\n\n# Study hours\nX = [[1], [2], [3], [4], [5]]\n\n# Scores\ny = [30, 40, 50, 60, 70]\n\n# Create the model\nmodel = LinearRegression()\n\n# Train the computer from data\nmodel.fit(X, y)\n\n# Predict the score for a student who studied 6 hours\nprint(model.predict([[6]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "كرر الجملة الأساسية: نوري الكمبيوتر أمثلة كثيرة، وهو يعدل نفسه."
+          },
+          {
+                    "title": "38. Model هو الناتج بعد التعلم",
+                    "level": "Practice",
+                    "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Training data\n# [study hours, sleep hours]\nX = [\n    [2, 5],\n    [4, 6],\n    [8, 5],\n    [10, 7]\n]\n\n# Result\n# 0 = fail, 1 = pass\ny = [0, 0, 1, 1]\n\n# Create the AI model\nmodel = DecisionTreeClassifier()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# New student: studied 6 hours and slept 6 hours\nstudent = [[6, 6]]\n\n# Predict the result\nresult = model.predict(student)\n\nif result[0] == 1:\n    print(\"Student: pass\")\nelse:\n    print(\"Student: fail\")",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "بعد fit يصبح عندنا نموذج قادر على توقع نتيجة لطالب جديد."
+          },
+          {
+                    "title": "39. AI لا يعني سحر",
+                    "level": "Practice",
+                    "code": "# A tiny training idea without complicated math\nweight = 1\n\nexamples = [\n    [2, 40],\n    [3, 50],\n    [4, 60]\n]\n\nfor hours, real_score in examples:\n    prediction = hours * weight + 20\n    error = real_score - prediction\n    weight = weight + error * 0.01\n    print(\"hours:\", hours, \"prediction:\", prediction, \"new weight:\", round(weight, 2))\n\nprint(\"Final weight:\", round(weight, 2))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "الذكاء الاصطناعي هنا بيانات + تدريب + نموذج + اختبار."
+          },
+          {
+                    "title": "40. الخلاصة النهائية",
+                    "level": "Practice",
+                    "code": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\n\n# Create a simple table with area and price\ndata = pd.DataFrame({\n    \"area\": [50, 80, 100, 120, 150, 200],\n    \"price\": [300, 450, 550, 650, 800, 1000]\n})\n\n# X = input (area)\nX = data[[\"area\"]]\n\n# y = output (price)\ny = data[\"price\"]\n\n# Create the AI model\nmodel = LinearRegression()\n\n# Train the model from data\nmodel.fit(X, y)\n\n# Ask it to predict the price of a 180-meter house\nprint(model.predict([[180]]))",
+                    "concept": "السيشن يشرح الذكاء الاصطناعي خطوة خطوة: نبدأ بقاعدة نكتبها بأنفسنا، ثم نترك النموذج يتعلم العلاقة من البيانات، ثم ننتقل من توقع رقم إلى تصنيف فئة.",
+                    "realWorld": "مثلما يتعلم الطفل الفرق بين القطة والكلب من أمثلة كثيرة، يتعلم نموذج الذكاء الاصطناعي من بيانات كثيرة ثم يحاول التعامل مع مثال جديد لم يره من قبل.",
+                    "breakdown": [
+                              "Data: الأمثلة التي نعلم بها الكمبيوتر.",
+                              "Training: عملية التعلم من الأمثلة باستخدام fit أو تدريب بصري مثل Teachable Machine.",
+                              "Model: الناتج بعد التدريب، وهو الشيء الذي نستخدمه للتوقع.",
+                              "Prediction: الإجابة التي يعطيها النموذج عند إدخال مثال جديد.",
+                              "جرّب تعديل جزء صغير في الكود ثم شغّله في Google Colab لأن أمثلة sklearn تحتاج بيئة Python كاملة."
+                    ],
+                    "mental": "فكر في النموذج كطالب يتدرب على مسائل محلولة، ثم يحاول حل مسألة جديدة من نفس النوع.",
+                    "mistake": "لا تعتبر التوقع حقيقة مؤكدة. النموذج يعطي نتيجة بناءً على البيانات التي تدرب عليها، ولو البيانات قليلة أو منحازة ستكون النتيجة ضعيفة.",
+                    "pro": "ابدأ دائمًا بسؤال واضح: ما المدخلات؟ ما الإجابة التي أريد توقعها؟ وهل المطلوب رقم Regression أم فئة Classification؟",
+                    "challenge": "غيّر رقمًا صغيرًا في أي مثال، ثم اسأل الطلاب: ما الذي تغير؟ البيانات أم السؤال أم القاعدة؟"
+          }
+];
+
+        // --- ثانياً: اختبار الذكاء الاصطناعي خطوة خطوة (50 سؤالاً) ---
+        const quizData = [
+          {
+                    "q": "ما عنوان السيشن؟",
+                    "opts": [
+                              "الذكاء الاصطناعي خطوة خطوة",
+                              "أساسيات HTML",
+                              "تصميم ألعاب",
+                              "شبكات الكمبيوتر"
+                    ],
+                    "ans": 0,
+                    "hint": "العنوان المطلوب هو الذكاء الاصطناعي خطوة خطوة."
+          },
+          {
+                    "q": "في أول مثال، من الذي كتب المعادلة؟",
+                    "opts": [
+                              "المبرمج",
+                              "النموذج وحده",
+                              "المتصفح",
+                              "ملف CSV"
+                    ],
+                    "ans": 0,
+                    "hint": "في المثال الأول نحن كتبنا return hours * 10 + 20 بأنفسنا."
+          },
+          {
+                    "q": "ما السؤال المهم بعد مثال القاعدة اليدوية؟",
+                    "opts": [
+                              "إزاي عرفنا المعادلة دي؟",
+                              "ما لون الصفحة؟",
+                              "ما اسم المتصفح؟",
+                              "كم حجم الصورة؟"
+                    ],
+                    "ans": 0,
+                    "hint": "الفكرة أن المعادلة يجب أن تأتي من البيانات."
+          },
+          {
+                    "q": "ما المكتبة المستخدمة في مثال LinearRegression؟",
+                    "opts": [
+                              "sklearn",
+                              "turtle",
+                              "pygame",
+                              "random فقط"
+                    ],
+                    "ans": 0,
+                    "hint": "LinearRegression موجودة في sklearn.linear_model."
+          },
+          {
+                    "q": "ماذا تفعل model.fit(X, y)؟",
+                    "opts": [
+                              "تدرب النموذج من البيانات",
+                              "تحذف البيانات",
+                              "تغير لون الشاشة",
+                              "تفتح واتساب"
+                    ],
+                    "ans": 0,
+                    "hint": "fit هي خطوة التدريب."
+          },
+          {
+                    "q": "ماذا تفعل model.predict([[6]])؟",
+                    "opts": [
+                              "تتوقع نتيجة لمدخل جديد",
+                              "تضيف عمودًا",
+                              "تحذف النموذج",
+                              "تغلق البرنامج"
+                    ],
+                    "ans": 0,
+                    "hint": "predict تستخدم النموذج بعد التدريب للسؤال عن مثال جديد."
+          },
+          {
+                    "q": "في مثال ساعات المذاكرة، X تمثل ماذا؟",
+                    "opts": [
+                              "ساعات المذاكرة",
+                              "أسماء الطلاب",
+                              "ألوان الصور",
+                              "أرقام الهواتف"
+                    ],
+                    "ans": 0,
+                    "hint": "X هي المدخلات."
+          },
+          {
+                    "q": "في مثال ساعات المذاكرة، y تمثل ماذا؟",
+                    "opts": [
+                              "الدرجات",
+                              "الأعمار",
+                              "الأسماء",
+                              "كلمات السر"
+                    ],
+                    "ans": 0,
+                    "hint": "y هي المخرجات أو الإجابات الصحيحة."
+          },
+          {
+                    "q": "ما الفكرة الأساسية في تعلم الآلة؟",
+                    "opts": [
+                              "الكمبيوتر يستنتج العلاقة من البيانات",
+                              "نرسم كل شيء يدويًا",
+                              "نلغي البيانات",
+                              "نمنع التجربة"
+                    ],
+                    "ans": 0,
+                    "hint": "النموذج يتعلم النمط من الأمثلة."
+          },
+          {
+                    "q": "في مثال البيوت، ما المدخل الأساسي؟",
+                    "opts": [
+                              "المساحة",
+                              "اسم الشارع",
+                              "لون الباب",
+                              "رقم الطالب"
+                    ],
+                    "ans": 0,
+                    "hint": "المساحة هي Feature المستخدمة للتوقع."
+          },
+          {
+                    "q": "في مثال البيوت، ما المخرج المطلوب توقعه؟",
+                    "opts": [
+                              "السعر",
+                              "اللون",
+                              "اسم المالك",
+                              "عدد الصور"
+                    ],
+                    "ans": 0,
+                    "hint": "النموذج يتوقع السعر."
+          },
+          {
+                    "q": "توقع السعر أو الدرجة يسمى غالبًا؟",
+                    "opts": [
+                              "Regression",
+                              "Classification",
+                              "Loop",
+                              "Print"
+                    ],
+                    "ans": 0,
+                    "hint": "Regression يعني توقع رقم."
+          },
+          {
+                    "q": "ما معنى Classification؟",
+                    "opts": [
+                              "توقع فئة",
+                              "توقع رقم فقط",
+                              "طباعة جدول",
+                              "تنزيل مكتبة"
+                    ],
+                    "ans": 0,
+                    "hint": "التصنيف يختار فئة مثل ينجح أو يرسب."
+          },
+          {
+                    "q": "في مثال الطالب، الناتج 1 يعني ماذا؟",
+                    "opts": [
+                              "ينجح",
+                              "يرسب",
+                              "ينام",
+                              "يتوقف البرنامج"
+                    ],
+                    "ans": 0,
+                    "hint": "الكود وضع 1 = ينجح."
+          },
+          {
+                    "q": "في مثال الطالب، الناتج 0 يعني ماذا؟",
+                    "opts": [
+                              "يرسب",
+                              "ينجح",
+                              "سعر البيت",
+                              "مساحة البيت"
+                    ],
+                    "ans": 0,
+                    "hint": "الكود وضع 0 = يرسب."
+          },
+          {
+                    "q": "ما المدخلان في نموذج نجاح الطالب؟",
+                    "opts": [
+                              "ساعات المذاكرة وساعات النوم",
+                              "السعر والمساحة",
+                              "الاسم واللون",
+                              "الصورة والصوت"
+                    ],
+                    "ans": 0,
+                    "hint": "X يحتوي [study hours, sleep hours]."
+          },
+          {
+                    "q": "ما النموذج المستخدم في مثال التصنيف؟",
+                    "opts": [
+                              "DecisionTreeClassifier",
+                              "LinearRegression",
+                              "DataFrame فقط",
+                              "print"
+                    ],
+                    "ans": 0,
+                    "hint": "التصنيف استخدم DecisionTreeClassifier."
+          },
+          {
+                    "q": "قبل التدريب، الكمبيوتر يكون مثل؟",
+                    "opts": [
+                              "طفل لم ير أمثلة",
+                              "خبير جاهز",
+                              "آلة حاسبة فقط",
+                              "ملف محفوظ"
+                    ],
+                    "ans": 0,
+                    "hint": "قبل التدريب لا يعرف النمط."
+          },
+          {
+                    "q": "ماذا نعرض على الكمبيوتر أثناء التدريب؟",
+                    "opts": [
+                              "أمثلة كثيرة مع الإجابة الصحيحة",
+                              "عنوان الصفحة فقط",
+                              "زر التشغيل فقط",
+                              "أسماء عشوائية"
+                    ],
+                    "ans": 0,
+                    "hint": "التدريب يعتمد على أمثلة وإجابات."
+          },
+          {
+                    "q": "ما المقصود بالأوزان Weights؟",
+                    "opts": [
+                              "أرقام داخلية يعدلها النموذج أثناء التعلم",
+                              "وزن الجهاز",
+                              "حجم الملف",
+                              "عدد الأزرار"
+                    ],
+                    "ans": 0,
+                    "hint": "الأوزان قيم داخلية تتحسن بالتدريب."
+          },
+          {
+                    "q": "ماذا يحدث عندما يخطئ النموذج أثناء التدريب؟",
+                    "opts": [
+                              "يعدل الأوزان قليلًا",
+                              "يمسح الكمبيوتر",
+                              "يتوقف للأبد",
+                              "يغير اسم الطالب"
+                    ],
+                    "ans": 0,
+                    "hint": "الخطأ يساعد على تعديل الأوزان."
+          },
+          {
+                    "q": "لماذا نكرر التدريب مرات كثيرة؟",
+                    "opts": [
+                              "حتى يقل الخطأ تدريجيًا",
+                              "حتى تكبر الشاشة",
+                              "حتى تختفي البيانات",
+                              "حتى تتغير اللغة"
+                    ],
+                    "ans": 0,
+                    "hint": "التكرار يساعد النموذج على التحسن."
+          },
+          {
+                    "q": "بعد التدريب على صور قطط وكلاب، هل النموذج يحفظ الصور فقط؟",
+                    "opts": [
+                              "لا، يتعلم صفات مشتركة",
+                              "نعم، يحفظ كل صورة فقط",
+                              "لا يستخدم الصور",
+                              "يتعلم HTML"
+                    ],
+                    "ans": 0,
+                    "hint": "الهدف تعلم النمط العام."
+          },
+          {
+                    "q": "أي من التالي قد يكون صفة يتعلمها نموذج صور القطط؟",
+                    "opts": [
+                              "شكل الأذن",
+                              "سعر البيت",
+                              "اسم مكتبة pandas",
+                              "رقم السؤال"
+                    ],
+                    "ans": 0,
+                    "hint": "في الصور يتعلم النموذج صفات بصرية."
+          },
+          {
+                    "q": "لماذا صورة قطة واحدة غالبًا غير كافية؟",
+                    "opts": [
+                              "لأن القطط متنوعة في اللون والحجم والزاوية",
+                              "لأن الصورة صغيرة فقط",
+                              "لأن النموذج لا يرى",
+                              "لأن Python ممنوعة"
+                    ],
+                    "ans": 0,
+                    "hint": "التنوع مهم لتحسين التعميم."
+          },
+          {
+                    "q": "ما معنى Data في Teachable Machine؟",
+                    "opts": [
+                              "الصور التي نعلم بها الكمبيوتر",
+                              "زر Start فقط",
+                              "لون الخلفية",
+                              "وقت الاختبار"
+                    ],
+                    "ans": 0,
+                    "hint": "الصور هي البيانات."
+          },
+          {
+                    "q": "ما معنى Model؟",
+                    "opts": [
+                              "الكمبيوتر بعد أن أصبح قادرًا على التمييز",
+                              "الصورة قبل التدريب",
+                              "اسم الطالب",
+                              "لون الزر"
+                    ],
+                    "ans": 0,
+                    "hint": "النموذج هو الناتج القابل للاستخدام بعد التدريب."
+          },
+          {
+                    "q": "ما الموقع المستخدم للتدريب البصري في السيشن؟",
+                    "opts": [
+                              "teachablemachine.withgoogle.com/train",
+                              "facebook.com",
+                              "example.com",
+                              "localhost فقط"
+                    ],
+                    "ans": 0,
+                    "hint": "الرابط المطلوب هو Teachable Machine."
+          },
+          {
+                    "q": "عند اختبار نموذج الصور، الأفضل استخدام صورة؟",
+                    "opts": [
+                              "جديدة لم تدخل التدريب",
+                              "نفس الصورة دائمًا",
+                              "فارغة",
+                              "مقلوبة فقط"
+                    ],
+                    "ans": 0,
+                    "hint": "الاختبار الجيد يكون على أمثلة جديدة."
+          },
+          {
+                    "q": "ما الذي يحدث لو كانت بيانات التدريب منحازة أو قليلة؟",
+                    "opts": [
+                              "قد تكون التوقعات ضعيفة",
+                              "تصبح النتيجة مثالية دائمًا",
+                              "لا يتأثر النموذج",
+                              "يزيد حجم الشاشة"
+                    ],
+                    "ans": 0,
+                    "hint": "جودة البيانات تؤثر على جودة النموذج."
+          },
+          {
+                    "q": "ما الفرق بين القاعدة اليدوية وتعلم الآلة؟",
+                    "opts": [
+                              "في تعلم الآلة النموذج يستنتج العلاقة من البيانات",
+                              "لا يوجد فرق",
+                              "القاعدة اليدوية تحتاج صورًا فقط",
+                              "تعلم الآلة بدون بيانات"
+                    ],
+                    "ans": 0,
+                    "hint": "هذا هو جوهر المقارنة."
+          },
+          {
+                    "q": "أي أمر يطبع النتيجة في Python؟",
+                    "opts": [
+                              "print",
+                              "fit",
+                              "predict",
+                              "import"
+                    ],
+                    "ans": 0,
+                    "hint": "print يعرض المخرجات."
+          },
+          {
+                    "q": "ماذا يعني import pandas as pd؟",
+                    "opts": [
+                              "استدعاء pandas باسم مختصر pd",
+                              "تدريب نموذج صور",
+                              "حذف جدول",
+                              "توقع نجاح طالب"
+                    ],
+                    "ans": 0,
+                    "hint": "pd اختصار شائع للمكتبة."
+          },
+          {
+                    "q": "لماذا نستخدم DataFrame في مثال البيوت؟",
+                    "opts": [
+                              "لتنظيم المساحة والسعر في جدول",
+                              "لتشغيل واتساب",
+                              "لرسم قطة",
+                              "لإغلاق الصفحة"
+                    ],
+                    "ans": 0,
+                    "hint": "DataFrame ينظم البيانات."
+          },
+          {
+                    "q": "ما المقصود بالمدخلات Inputs؟",
+                    "opts": [
+                              "المعلومات التي نعطيها للنموذج",
+                              "الإجابة النهائية فقط",
+                              "عنوان الصفحة",
+                              "اسم الزر"
+                    ],
+                    "ans": 0,
+                    "hint": "X غالبًا تمثل المدخلات."
+          },
+          {
+                    "q": "ما المقصود بالمخرجات Outputs؟",
+                    "opts": [
+                              "الإجابات التي يتعلمها النموذج أو يتوقعها",
+                              "لون النص",
+                              "حجم الشاشة",
+                              "المتصفح"
+                    ],
+                    "ans": 0,
+                    "hint": "y تمثل الإجابات الصحيحة أثناء التدريب."
+          },
+          {
+                    "q": "إذا غيرنا بيانات التدريب، ماذا قد يحدث؟",
+                    "opts": [
+                              "يتغير ما يتعلمه النموذج",
+                              "لا يحدث أي شيء أبدًا",
+                              "تختفي Python",
+                              "يتغير اسم الملف فقط"
+                    ],
+                    "ans": 0,
+                    "hint": "النموذج يعتمد على البيانات."
+          },
+          {
+                    "q": "إذا غيرنا قيمة predict من 6 إلى 8، ماذا نغير؟",
+                    "opts": [
+                              "السؤال الموجه للنموذج",
+                              "بيانات التدريب كلها",
+                              "اسم المكتبة",
+                              "نوع الصفحة"
+                    ],
+                    "ans": 0,
+                    "hint": "predict تسأل عن مثال جديد."
+          },
+          {
+                    "q": "ما أفضل طريقة لشرح الأوزان للأطفال؟",
+                    "opts": [
+                              "مفاتيح صغيرة يضبطها الكمبيوتر",
+                              "أسلاك كهرباء فقط",
+                              "ألوان CSS",
+                              "ملفات مضغوطة"
+                    ],
+                    "ans": 0,
+                    "hint": "تشبيه المفاتيح مناسب بدون رياضيات."
+          },
+          {
+                    "q": "عندما يرى النموذج صورة جديدة، ماذا يفعل؟",
+                    "opts": [
+                              "يقارن ما تعلمه بالصفات الموجودة فيها",
+                              "يحفظها كاسم طالب",
+                              "يحولها إلى سعر بيت",
+                              "يغلق التدريب"
+                    ],
+                    "ans": 0,
+                    "hint": "يستخدم النمط الذي تعلمه."
+          },
+          {
+                    "q": "ما معنى تقليل الخطأ؟",
+                    "opts": [
+                              "جعل الفرق بين التوقع والحقيقة أصغر",
+                              "تقليل عدد الأزرار",
+                              "تصغير الصفحة",
+                              "حذف الصور"
+                    ],
+                    "ans": 0,
+                    "hint": "التدريب يحاول تقليل الخطأ."
+          },
+          {
+                    "q": "أي مثال يمثل Regression؟",
+                    "opts": [
+                              "توقع سعر بيت",
+                              "ينجح أو يرسب",
+                              "قطة أو كلب",
+                              "تشغيل زر"
+                    ],
+                    "ans": 0,
+                    "hint": "السعر رقم."
+          },
+          {
+                    "q": "أي مثال يمثل Classification؟",
+                    "opts": [
+                              "قطة أو كلب",
+                              "سعر بيت",
+                              "درجة رقمية",
+                              "مساحة بالمتر"
+                    ],
+                    "ans": 0,
+                    "hint": "قطة/كلب فئات."
+          },
+          {
+                    "q": "في Teachable Machine، Class تعني؟",
+                    "opts": [
+                              "فئة مثل قطة أو كلب",
+                              "رقم السعر",
+                              "سطر كود",
+                              "اسم الموقع"
+                    ],
+                    "ans": 0,
+                    "hint": "Class هي الفئة التي يتعلمها النموذج."
+          },
+          {
+                    "q": "لماذا نحتاج صورًا بزوايا مختلفة؟",
+                    "opts": [
+                              "حتى يتعلم النموذج الشكل العام ولا يعتمد على زاوية واحدة",
+                              "حتى يزيد الوقت فقط",
+                              "حتى يتغير الخط",
+                              "حتى نحذف التدريب"
+                    ],
+                    "ans": 0,
+                    "hint": "التنوع يساعد التعميم."
+          },
+          {
+                    "q": "ما ترتيب الفكرة الأساسية؟",
+                    "opts": [
+                              "Data ثم Training ثم Model ثم Prediction",
+                              "Prediction ثم Data ثم Model",
+                              "Model ثم حذف البيانات",
+                              "زر ثم لون ثم صورة"
+                    ],
+                    "ans": 0,
+                    "hint": "هذا الترتيب يلخص السيشن."
+          },
+          {
+                    "q": "ما الذي يجب على الطالب تجربته في الكود؟",
+                    "opts": [
+                              "تغيير جزء بسيط وملاحظة النتيجة",
+                              "حذف كل الكود",
+                              "تغيير اسم الملف",
+                              "إغلاق الصفحة"
+                    ],
+                    "ans": 0,
+                    "hint": "التفاعل المطلوب هو تعديل صغير ورؤية الأثر."
+          },
+          {
+                    "q": "لماذا نفتح Colab للأكواد؟",
+                    "opts": [
+                              "لأن sklearn وpandas تحتاج بيئة Python كاملة",
+                              "لأنه موقع ألعاب",
+                              "لأنه يغير اللغة",
+                              "لأنه يحذف الاختبار"
+                    ],
+                    "ans": 0,
+                    "hint": "الأمثلة المتقدمة تعمل أفضل في Colab."
+          },
+          {
+                    "q": "ما الخلاصة الصحيحة للسيشن؟",
+                    "opts": [
+                              "الذكاء الاصطناعي يتعلم من البيانات بالتدريب",
+                              "الذكاء الاصطناعي سحر بلا بيانات",
+                              "الكمبيوتر يعرف كل شيء قبل التدريب",
+                              "كل النماذج تتوقع أرقامًا فقط"
+                    ],
+                    "ans": 0,
+                    "hint": "هذه هي الخلاصة الأساسية."
+          },
+          {
+                    "q": "ما أول سؤال تسأله قبل بناء نموذج؟",
+                    "opts": [
+                              "ما المدخلات وما المخرج المطلوب؟",
+                              "ما لون الزر؟",
+                              "كم عدد الصور في الصفحة؟",
+                              "ما اسم المتصفح؟"
+                    ],
+                    "ans": 0,
+                    "hint": "تحديد X و y أساس بناء النموذج."
+          }
+];
+
+        // --- ثالثاً: هيكل الصفحة وتشغيل الواجهة البرمجية بالكامل ---
+        let currentLessonIndex = 0;
+        let currentQuizIndex = 0;
+        let studentAnswers = new Array(quizData.length).fill(null);
+        let studentName = "";
+        let quizTimer = null;
+        let timeLeft = 3600; // 60 دقيقة كاملة بالاختبار
+
+        // دالة معدلة وذكية لفصل اللغات، تعتمد بايثون كوضع افتراضي قوي للبيانات الحالية
+        const splitCode = (fullCode) => {
+            let jsCode = "";
+            let pyCode = "";
+            let trimmed = fullCode.trim();
+
+            // إذا كان الكود يحتوي على علامة التقسيم الخاصة (في حال أضفت دروس JS مستقبلاً)
+            if (trimmed.includes("// JS") && trimmed.includes("# PY")) {
+                let parts = trimmed.split("# PY");
+                jsCode = parts[0].replace("// JS", "").trim();
+                pyCode = parts[1].trim();
+            }
+            // إذا كان الكود يحتوي صراحة على console.log وليس فيه أوامر بايثون
+            else if (trimmed.includes("console.log") && !trimmed.includes("print(")) {
+                jsCode = trimmed;
+            }
+            // في كل الحالات الأخرى (وهي حالة دروس الشرح الـ 40 الحالية)، نعتبر الكود هو بايثون الخالص
+            else {
+                pyCode = trimmed;
+            }
+
+            return { jsCode, pyCode };
+        };
+
+        // دالة للتبديل بين التبويبات
+        window.switchCodeTab = function (index, lang) {
+            const jsTabBtn = document.getElementById(`tab-btn-js-${index}`);
+            const pyTabBtn = document.getElementById(`tab-btn-py-${index}`);
+            const jsContainer = document.getElementById(`js-editor-container-${index}`);
+            const pyContainer = document.getElementById(`py-editor-container-${index}`);
+            const outputDiv = document.getElementById(`console-output-${index}`);
+
+            // تنظيف المخرجات عند التبديل
+            if (outputDiv) {
+                outputDiv.innerHTML = "اضغط على تشغيل لرؤية المخرجات الحية...";
+                outputDiv.style.color = "#58a6ff";
+            }
+
+            if (lang === 'js') {
+                if (jsTabBtn) jsTabBtn.classList.add('active');
+                if (pyTabBtn) pyTabBtn.classList.remove('active');
+                if (jsContainer) jsContainer.style.display = 'block';
+                if (pyContainer) pyContainer.style.display = 'none';
+            } else {
+                if (jsTabBtn) jsTabBtn.classList.remove('active');
+                if (pyTabBtn) pyTabBtn.classList.add('active');
+                if (jsContainer) jsContainer.style.display = 'none';
+                if (pyContainer) pyContainer.style.display = 'block';
+            }
+        };
+
+        function loadLesson(index) {
+            const lesson = lessonsData[index];
+            document.getElementById('lesson-progress').innerText = `الدرس ${index + 1} من ${lessonsData.length}`;
+
+            // فصل الكود المدمج
+            let { jsCode, pyCode } = splitCode(lesson.code);
+
+            // بناء واجهة التبويبات والمحررات ديناميكياً
+            let tabsHtml = `<div class="code-tabs">`;
+            if (jsCode) tabsHtml += `<button id="tab-btn-js-${index}" class="tab-btn active" onclick="switchCodeTab(${index}, 'js')">JavaScript</button>`;
+            if (pyCode) tabsHtml += `<button id="tab-btn-py-${index}" class="tab-btn ${!jsCode ? 'active' : ''}" onclick="switchCodeTab(${index}, 'py')">Python</button>`;
+            tabsHtml += `</div>`;
+
+            let editorsHtml = ``;
+            if (jsCode) {
+                editorsHtml += `
+                <div id="js-editor-container-${index}" style="display: ${jsCode ? 'block' : 'none'}; padding: 15px;">
+                    <div class="editor-header" style="border-radius: 6px 6px 0 0;">
+                        <span>💻 كود JavaScript</span>
+                        <button class="btn btn-check" style="padding:4px 10px; font-size:0.8rem; margin:0;" onclick="runJSCode(${index})">تشغيل JS ⚡</button>
+                    </div>
+                    <textarea id="js-code-${index}" class="code-editor" style="background-color: var(--bg-color); border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 6px 6px;">${jsCode}</textarea>
+                </div>`;
+            }
+            if (pyCode) {
+                editorsHtml += `
+                <div id="py-editor-container-${index}" style="display: ${!jsCode ? 'block' : 'none'}; padding: 15px;">
+                    <div class="editor-header" style="border-radius: 6px 6px 0 0;">
+                        <span>🐍 كود Python</span>
+                        <span><button data-run-python class="btn btn-check" style="padding:4px 10px; font-size:0.8rem; margin:0;" onclick="runPyCode(${index})">تشغيل Python ⚡</button><button data-copy-code class="btn" style="padding:4px 10px; font-size:0.8rem; margin:0;" onclick="copyLessonCode(${index}, 'py')">نسخ الكود 📋</button><button data-open-colab class="btn btn-youtube" style="padding:4px 10px; font-size:0.8rem; margin:0;" onclick="window.open('https://colab.research.google.com/#create=true', '_blank')">فتح Colab 🚀</button></span>
+                    </div>
+                    <textarea id="py-code-${index}" class="code-editor" style="background-color: var(--bg-color); border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 6px 6px;">${pyCode}</textarea>
+                </div>`;
+            }
+
+            let html = `
+                <h3>${lesson.title}</h3>
+                <span class="badge" style="background-color: #2ea44f; color: #fff;"><span data-lesson-label="level">المستوى</span>: ${lesson.level}</span>
+                
+                <p style="margin-top:15px;"><b data-lesson-label="concept">💡 المفهوم البرمجي الأساسي:</b> ${lesson.concept}</p>
+                <div class="info-block"><b data-lesson-label="realWorld">🌍 مثال من الحياة الواقعية:</b> ${lesson.realWorld}</div>
+                
+                <div class="editor-container">
+                    ${tabsHtml}
+                    ${editorsHtml}
+                    <div class="console-output">
+                        <div class="console-title" data-console-title>🖥️ لوحة تحكم المتصفح (Console Output):</div>
+                        <div id="console-output-${index}" data-console-idle>اضغط على تشغيل لرؤية المخرجات الحية...</div>
+                    </div>
+                </div>
+
+                <h4 data-lesson-label="breakdown">📝 تحليل السطور البرمجية خطوة بخطوة:</h4>
+                <ul class="breakdown-list">
+                    ${lesson.breakdown.map(item => `<li>${item}</li>`).join('')}
+                </ul>
+
+                <div class="info-block challenge"><b data-lesson-label="challenge">🤖 تحدي المهندس أندرو:</b> ${lesson.challenge}</div>
+                <div class="info-block mistake"><b data-lesson-label="mistake">⚠️ خطأ شائع احذر منه:</b> ${lesson.mistake}</div>
+                <p style="color: var(--accent-color);"><b data-lesson-label="pro">🎯 نصيحة المحترفين (Pro-Tip):</b> ${lesson.pro}</p>
+            `;
+
+            document.getElementById('lesson-content-area').innerHTML = html;
+            document.getElementById('prev-lesson-btn').disabled = (index === 0);
+            document.getElementById('next-lesson-btn').disabled = (index === lessonsData.length - 1);
+        }
+
+        // تشغيل كود جافا سكريبت
+        window.runJSCode = function (index) {
+            const editor = document.getElementById(`js-code-${index}`);
+            const outputDiv = document.getElementById(`console-output-${index}`);
+            const userCode = editor.value;
+
+            outputDiv.innerHTML = "جاري معالجة وتشغيل الكود... ⚡";
+            outputDiv.style.color = "#58a6ff";
+
+            let jsLogs = [];
+            const customConsole = {
+                log: function (msg) {
+                    jsLogs.push(msg);
+                }
+            };
+
+            try {
+                const runFn = new Function('console', userCode);
+                runFn(customConsole);
+                if (jsLogs.length === 0) {
+                    outputDiv.innerHTML = "<span style='color:var(--warning-color);'>تم تشغيل الكود بنجاح ولكن لا توجد مخرجات للطباعة. أضف console.log() لرؤية النتيجة!</span>";
+                } else {
+                    outputDiv.innerHTML = jsLogs.map(l => {
+                        if (typeof l === 'object') return JSON.stringify(l);
+                        return l;
+                    }).join('\n');
+                }
+                outputDiv.style.color = "#58a6ff";
+            } catch (err) {
+                outputDiv.innerHTML = "❌ خطأ في كود جافا سكريبت الخاص بك:\n" + err.message;
+                outputDiv.style.color = "var(--danger-color)";
+            }
+        };
+
+        // تشغيل كود بايثون فقط باستخدام Skulpt
+        window.copyLessonCode = function (index, lang) {
+            const editor = document.getElementById(`${lang}-code-${index}`);
+            const outputDiv = document.getElementById(`console-output-${index}`);
+            if (!editor) return;
+
+            const fallbackText = {
+                copied: "تم نسخ الكود. افتح Google Colab والصقه في خلية جديدة ثم اضغط Run.\nCode copied. Paste it into Google Colab or Jupyter and run it.",
+                selected: "تم تحديد الكود. اضغط Ctrl+C إن لم يتم نسخه تلقائياً، ثم الصقه في Colab."
+            };
+            const text = (window.uiText && window.uiText[window.currentLanguage]) || fallbackText;
+            const codeToCopy = editor.value;
+
+            const fallbackCopy = function () {
+                editor.focus();
+                editor.select();
+                try { document.execCommand("copy"); } catch (err) {}
+                outputDiv.innerText = text.selected;
+                outputDiv.style.color = "var(--warning-color)";
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(codeToCopy).then(function () {
+                    outputDiv.innerText = text.copied;
+                    outputDiv.style.color = "var(--success-color)";
+                }).catch(fallbackCopy);
+            } else {
+                fallbackCopy();
+            }
+        };
+
+        window.runPyCode = function (index) {
+            const editor = document.getElementById(`py-code-${index}`);
+            const outputDiv = document.getElementById(`console-output-${index}`);
+            const userCode = editor.value;
+
+            outputDiv.innerHTML = "جاري معالجة وتشغيل الكود... ⚡";
+            outputDiv.style.color = "#58a6ff";
+
+            let pyOutputs = [];
+
+            Sk.configure({
+                output: function (text) {
+                    pyOutputs.push(text);
+                },
+                read: function (x) {
+                    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                        throw "File not found: '" + x + "'";
+                    }
+                    return Sk.builtinFiles["files"][x];
+                },
+                inputfun: function (promptText) {
+                    return window.prompt(promptText || "برجاء إدخال البيانات المطلوبة لكود بايثون:");
+                }
+            });
+
+            Sk.misceval.asyncToPromise(function () {
+                return Sk.importMainWithBody("<stdin>", false, userCode, true);
+            }).then(function (mod) {
+                if (pyOutputs.length === 0) {
+                    outputDiv.innerHTML = "<span style='color:var(--warning-color);'>تم تشغيل كود بايثون بنجاح ولكن لا توجد مخرجات للطباعة. تأكد من استخدام أمر print() لرؤية النتيجة!</span>";
+                } else {
+                    outputDiv.innerText = pyOutputs.join("");
+                }
+                outputDiv.style.color = "#58a6ff";
+            }, function (err) {
+                outputDiv.innerText = "❌ خطأ في كود بايثون الخاص بك:\n" + err.toString();
+                outputDiv.style.color = "var(--danger-color)";
+            });
+        };
+
+        function navigateLesson(direction) {
+            currentLessonIndex += direction;
+            if (currentLessonIndex >= 0 && currentLessonIndex < lessonsData.length) {
+                loadLesson(currentLessonIndex);
+            }
+        }
+
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name-input').value.trim();
+            if (nameInput === "") {
+                alert("برجاء إدخال اسمك ثلاثي لبدء الاختبار واستخراج التقرير بنجاح! 🚀");
+                return;
+            }
+            studentName = nameInput;
+            document.getElementById('quiz-setup').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('timer-box').style.display = 'block';
+
+            startTimer();
+            loadQuizQuestion(currentQuizIndex);
+        }
+
+        function startTimer() {
+            quizTimer = setInterval(function () {
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timer-display').innerText =
+                    (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
+
+                if (timeLeft <= 0) {
+                    clearInterval(quizTimer);
+                    alert("انتهى وقت الاختبار التلقائي! سيتم تجميع وإرسال إجاباتك الحالية فوراً للتقييم.");
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function loadQuizQuestion(index) {
+            const qData = quizData[index];
+            document.getElementById('quiz-progress').innerText = `السؤال ${index + 1} من ${quizData.length}`;
+            document.getElementById('question-title').innerText = `السؤال الحالي رقم (${index + 1}):`;
+
+            let html = `
+                <div style="font-size: 1.2rem; margin-bottom: 20px; font-weight: bold; white-space: pre-wrap; line-height:1.6; color:#ffd700;">${qData.q}</div>
+                
+                <div class="interactive-tab">
+                    <div class="interactive-tab-header" onclick="this.parentElement.classList.toggle('active')">💡 اضغط هنا لإظهار تلميحة المهندس أندرو المساعدة للمساعدة في الحل</div>
+                    <div class="interactive-tab-content">${qData.hint}</div>
+                </div>
+
+                <ul class="options-list">
+                    ${qData.opts.map((opt, oIdx) => `
+                        <li class="option-item" id="opt-item-${oIdx}" onclick="selectOption(${oIdx})">
+                            <input type="radio" name="quiz-opt" id="opt-${oIdx}" value="${oIdx}" ${studentAnswers[index] === oIdx ? 'checked' : ''}>
+                            <label for="opt-${oIdx}" style="cursor:pointer; width:100%; display:block;">${opt}</label>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+
+            document.getElementById('dynamic-quiz-area').innerHTML = html;
+            document.getElementById('feedback-area').innerHTML = "";
+
+            document.getElementById('prev-quiz-btn').disabled = (index === 0);
+            document.getElementById('next-quiz-btn').disabled = (index === quizData.length - 1);
+        }
+
+        function selectOption(optIdx) {
+            document.getElementById(`opt-${optIdx}`).checked = true;
+            studentAnswers[currentQuizIndex] = optIdx;
+        }
+
+        function checkCurrentAnswer() {
+            const selected = studentAnswers[currentQuizIndex];
+            if (selected === null) {
+                document.getElementById('feedback-area').innerHTML = `<p class="feedback-msg" style="color: var(--warning-color);">⚠️ يرجى تحديد إجابة أولاً للتحقق منها!</p>`;
+                return;
+            }
+
+            const correctAns = quizData[currentQuizIndex].ans;
+
+            for (let i = 0; i < quizData[currentQuizIndex].opts.length; i++) {
+                const item = document.getElementById(`opt-item-${i}`);
+                if (item) {
+                    item.classList.remove('correct', 'wrong');
+                    if (i === correctAns) item.classList.add('correct');
+                    else if (i === selected) item.classList.add('wrong');
+                }
+            }
+
+            if (selected === correctAns) {
+                document.getElementById('feedback-area').innerHTML = `<p class="feedback-msg" style="color: var(--success-color);">🎉 إجابة ممتازة وصحيحة عبقري مستر روبوت المطور! تابع للأمام.</p>`;
+            } else {
+                document.getElementById('feedback-area').innerHTML = `<p class="feedback-msg" style="color: var(--danger-color);">❌ إجابة غير دقيقة. راجع التلميحة المساعدة بالأعلى وحاول مجدداً بثقة!</p>`;
+            }
+        }
+
+        function navigateQuiz(direction) {
+            currentQuizIndex += direction;
+            if (currentQuizIndex >= 0 && currentQuizIndex < quizData.length) {
+                loadQuizQuestion(currentQuizIndex);
+            }
+        }
+
+        function submitQuiz() {
+            let unanswered = 0;
+            studentAnswers.forEach(ans => { if (ans === null) unanswered++; });
+
+            if (unanswered > 0) {
+                if (!confirm(`انتبه! لديك ${unanswered} سؤالاً لم تقم بالإجابة عليها بعد في الاختبار الشامل. هل تريد الاستمرار وإنهاء الاختبار بالكامل على أي حال؟`)) {
+                    return;
+                }
+            }
+
+            clearInterval(quizTimer);
+            document.getElementById('timer-box').style.display = 'none';
+
+            let finalScore = 0;
+            let totalQuestions = quizData.length;
+
+            quizData.forEach((quiz, index) => {
+                if (studentAnswers[index] === quiz.ans) {
+                    finalScore++;
+                }
+            });
+
+            let percentage = Math.round((finalScore / totalQuestions) * 100);
+
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('result-container').style.display = 'block';
+            document.getElementById('score-summary').innerHTML = `لقد أجبت بشكل صحيح على <b>${finalScore}</b> من أصل <b>${totalQuestions}</b> سؤال بنسبة نجاح بلغت <b>${percentage}%</b>.`;
+
+            document.getElementById('cert-name').innerText = studentName;
+            document.getElementById('cert-score').innerText = `بدرجة تميز بلغت: ${percentage}%`;
+        }
+
+        function shareToWhatsApp() {
+            const targetPhone = "201555772562";
+            const currentScore = document.getElementById('cert-score').innerText.split(': ')[1];
+            const message = `مرحباً مهندس / أندرو، أنا الطالب/الطالبة: ${studentName}.\nهذا تقرير بالواجبات المطلوبة مني وقد اجتزت الواجبات والاختبارات بنسبة تميز بلغت ${currentScore}! 🎉🤖`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        window.currentLanguage = "ar";
+
+        window.uiText = {
+            ar: {
+                dir: "rtl",
+                toggle: "English",
+                academy: "أكاديمية مستر روبوت",
+                instructor: "مهندس / أندرو مجدي",
+                youtube: "قناة اليوتيوب الرسمية",
+                lessonsTitle: "📚 محاضرة الذكاء الاصطناعي خطوة خطوة",
+                quizTitle: "📝 اختبار الذكاء الاصطناعي خطوة خطوة (50 سؤال)",
+                nameHint: "يرجى إدخال اسمك ثلاثي.",
+                nameLabel: "اسم الطالب / الطالبة:",
+                namePlaceholder: "اكتب اسمك الثلاثي هنا...",
+                startQuiz: "ابدأ الاختبار التفاعلي الآن 🚀",
+                questionTitle: "السؤال الحالي:",
+                prevLesson: "⬅ الدرس السابق",
+                nextLesson: "الدرس التالي ➡",
+                prevQuiz: "السابق",
+                nextQuiz: "التالي",
+                check: "التحقق من الإجابة 🔍",
+                submit: "تأكيد إنهاء الاختبار بالكامل وإرسال الإجابات ✔",
+                run: "تشغيل Python ⚡",
+                copy: "نسخ الكود 📋",
+                colab: "فتح Colab 🚀",
+                copied: "تم نسخ الكود. افتح Google Colab والصقه في خلية جديدة ثم اضغط Run.\nCode copied. Paste it into Google Colab or Jupyter and run it.",
+                selected: "تم تحديد الكود. اضغط Ctrl+C إن لم يتم نسخه تلقائياً، ثم الصقه في Colab."
+            },
+            en: {
+                dir: "ltr",
+                toggle: "عربي",
+                academy: "Mr. Robot Academy",
+                instructor: "Engineer / Andrew Magdy",
+                youtube: "Official YouTube Channel",
+                lessonsTitle: "📚 Step-by-Step AI Lesson",
+                quizTitle: "📝 Step-by-Step AI Quiz (50 Questions)",
+                nameHint: "Please enter your full name.",
+                nameLabel: "Student name:",
+                namePlaceholder: "Write your full name here...",
+                startQuiz: "Start the interactive quiz now 🚀",
+                questionTitle: "Current question:",
+                prevLesson: "⬅ Previous lesson",
+                nextLesson: "Next lesson ➡",
+                prevQuiz: "Previous",
+                nextQuiz: "Next",
+                check: "Check answer 🔍",
+                submit: "Finish quiz and submit answers ✔",
+                run: "Run Python ⚡",
+                copy: "Copy code 📋",
+                colab: "Open Colab 🚀",
+                copied: "Code copied. Open Google Colab, paste it into a new cell, then press Run.",
+                selected: "Code selected. Press Ctrl+C if it was not copied automatically, then paste it into Colab."
+            }
+        };
+
+        function setUiText(selector, value) {
+            const element = document.querySelector(selector);
+            if (element) element.innerText = value;
+        }
+
+        function applyLanguage() {
+            const text = window.uiText[window.currentLanguage];
+            document.documentElement.lang = window.currentLanguage;
+            document.documentElement.dir = text.dir;
+            document.body.dir = text.dir;
+
+            setUiText("#language-toggle-btn", text.toggle);
+            setUiText("header h1", text.academy);
+            setUiText("header p", text.instructor);
+            const youtubeBtn = document.querySelector("header .btn-youtube");
+            if (youtubeBtn) youtubeBtn.innerText = text.youtube;
+            setUiText("#lessons-section h2", text.lessonsTitle);
+            setUiText("#quiz-setup h2", text.quizTitle);
+            setUiText("#quiz-setup p", text.nameHint);
+            setUiText("label[for='student-name-input']", text.nameLabel);
+            const nameInput = document.getElementById("student-name-input");
+            if (nameInput) nameInput.placeholder = text.namePlaceholder;
+            const startButton = document.querySelector("#quiz-setup button[onclick='startQuiz()']");
+            if (startButton) startButton.innerText = text.startQuiz;
+            setUiText("#question-title", text.questionTitle);
+            setUiText("#prev-lesson-btn", text.prevLesson);
+            setUiText("#next-lesson-btn", text.nextLesson);
+            setUiText("#prev-quiz-btn", text.prevQuiz);
+            setUiText("#next-quiz-btn", text.nextQuiz);
+            setUiText("#check-ans-btn", text.check);
+            const submitButton = document.querySelector("#quiz-container > button");
+            if (submitButton) submitButton.innerText = text.submit;
+            document.querySelectorAll("[data-run-python]").forEach(btn => btn.innerText = text.run);
+            document.querySelectorAll("[data-copy-code]").forEach(btn => btn.innerText = text.copy);
+            document.querySelectorAll("[data-open-colab]").forEach(btn => btn.innerText = text.colab);
+        }
+
+        window.toggleLanguage = function () {
+            window.currentLanguage = window.currentLanguage === "ar" ? "en" : "ar";
+            applyLanguage();
+        };
+
+        window.onload = function () {
+            loadLesson(currentLessonIndex);
+            applyLanguage();
+        };
+    </script>
+</body>
+
+</html>

@@ -2136,7 +2136,7 @@
         function shareToWhatsApp() {
             const targetPhone = "201555772562";
             const currentScore = document.getElementById('cert-score').innerText.split(': ')[1];
-            const message = `مرحباً مهندس / أندرو، أنا الطالب/الطالبة: ${studentName}.\nهذا تقرير بالواجبات المطلوبة (الخصة الثامنة) مني وقد اجتزت الواجبات والاختبارات بنسبة تميز بلغت ${currentScore}! 🎉🤖`;
+            const message = `مرحباً مهندس / أندرو، أنا الطالب/الطالبة: ${studentName}.\nهذا تقرير بالواجبات المطلوبة (الحصة الثامنة) مني وقد اجتزت الواجبات والاختبارات بنسبة تميز بلغت ${currentScore}! 🎉🤖`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodedMessage}`;
             window.open(whatsappUrl, '_blank');
